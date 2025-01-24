@@ -1,4 +1,4 @@
-# 🌻 Bitfields
+# 🌻 Bitfields-CSharp
 
 [![GitHub][github-badge]][github-url]
 [![License][license-badge]][license-url]
@@ -13,7 +13,7 @@
 [kofi-badge]: https://img.shields.io/badge/Ko--fi-FF5E5B?logo=kofi&logoColor=fff&style=flat
 [kofi-url]: https://ko-fi.com/T6T07SXPV
 
-A C# create that provides a source generator for generating bitfields from classes, structs, or
+A C# package that provides a source generator for generating bitfields from classes, structs, or
 custom types, which is useful for defining schemas when working with low-level environments
 or concepts (e.g. embedded or writing an emulator).
 
@@ -28,13 +28,13 @@ or concepts (e.g. embedded or writing an emulator).
 Bitfields is available as a NuGet package. You can install it using the following command:
 
 ```bash
-nuget install Bitfields
+nuget install Bitfields.CSharp
 ```
 
 Or using the .NET Core command-line interface:
 
 ```bash
-dotnet add package Bitfields
+dotnet add package Bitfields.CSharp
 ```
 
 ## 🚀 Getting Started

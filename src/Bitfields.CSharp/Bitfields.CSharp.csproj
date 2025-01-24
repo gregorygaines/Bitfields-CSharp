@@ -10,7 +10,7 @@
 
     <PropertyGroup>
         <PackageId>Bitfields.CSharp</PackageId>
-        <Version>0.1.1</Version>
+        <Version>0.1.2</Version>
         <Authors>Gregory Gaines</Authors>
         <Description>Source generator for generating flexible bitfields for classes or structs, useful for low-level code (embedded or emulators).</Description>
         <PackageTags>Bitfield, Bitfields, C#, Bit, Emulator, Embedded, class, struct</PackageTags>
