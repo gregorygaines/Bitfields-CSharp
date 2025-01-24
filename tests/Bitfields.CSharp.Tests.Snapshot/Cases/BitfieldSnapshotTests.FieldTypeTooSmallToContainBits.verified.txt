@@ -1,0 +1,25 @@
+﻿{
+  Diagnostics: [
+    {
+      Location: /*
+{
+    [Bits(16)]
+    ^^^^^^^^^^
+    byte _field;
+^^^^^^^^^^^^^^^^
+}
+*/
+ : (5,4)-(6,16),
+      Message: The field type 'byte' (8 bits) is too small to hold the specified bits '16 bits'.,
+      Severity: Error,
+      Descriptor: {
+        Id: BITFS004,
+        Title: Field type is too small to hold the specified bits,
+        MessageFormat: The field type 'byte' (8 bits) is too small to hold the specified bits '16 bits'.,
+        Category: Bitfields.CSharp.Generator,
+        DefaultSeverity: Error,
+        IsEnabledByDefault: true
+      }
+    }
+  ]
+}

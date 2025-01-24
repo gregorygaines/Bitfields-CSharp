@@ -1,0 +1,23 @@
+﻿{
+  Diagnostics: [
+    {
+      Location: /*
+[Bitfield(BitfieldType.Byte)]
+public class Bitfield
+             ^^^^^^^^
+{
+*/
+ : (3,13)-(3,21),
+      Message: Bitfield must be marked partial,
+      Severity: Error,
+      Descriptor: {
+        Id: BITFS001,
+        Title: Not a partial class or struct,
+        MessageFormat: {0} must be marked partial,
+        Category: Bitfields.CSharp.Generator,
+        DefaultSeverity: Error,
+        IsEnabledByDefault: true
+      }
+    }
+  ]
+}

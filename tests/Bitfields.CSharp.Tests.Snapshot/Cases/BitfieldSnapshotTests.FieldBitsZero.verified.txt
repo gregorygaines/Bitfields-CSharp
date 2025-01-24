@@ -1,0 +1,25 @@
+﻿{
+  Diagnostics: [
+    {
+      Location: /*
+{
+    [Bits(0)]
+    ^^^^^^^^^
+    byte _field;
+^^^^^^^^^^^^^^^^
+}
+*/
+ : (5,4)-(6,16),
+      Message: Field bits must be greater than 0.,
+      Severity: Error,
+      Descriptor: {
+        Id: BITFS005,
+        Title: Field bits must be greater than 0,
+        MessageFormat: Field bits must be greater than 0.,
+        Category: Bitfields.CSharp.Generator,
+        DefaultSeverity: Error,
+        IsEnabledByDefault: true
+      }
+    }
+  ]
+}

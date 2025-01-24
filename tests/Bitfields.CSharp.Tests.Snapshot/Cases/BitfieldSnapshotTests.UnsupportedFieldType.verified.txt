@@ -1,0 +1,23 @@
+﻿{
+  Diagnostics: [
+    {
+      Location: /*
+{
+    private decimal _field;
+    ^^^^^^^^^^^^^^^^^^^^^^^
+}
+*/
+ : (5,4)-(5,27),
+      Message: The field type 'decimal' is not supported for bitfields. Only integer and boolean types are supported.,
+      Severity: Error,
+      Descriptor: {
+        Id: BITFS002,
+        Title: Unsupported bitfield field type,
+        MessageFormat: The field type 'decimal' is not supported for bitfields. Only integer and boolean types are supported.,
+        Category: Bitfields.CSharp.Generator,
+        DefaultSeverity: Error,
+        IsEnabledByDefault: true
+      }
+    }
+  ]
+}

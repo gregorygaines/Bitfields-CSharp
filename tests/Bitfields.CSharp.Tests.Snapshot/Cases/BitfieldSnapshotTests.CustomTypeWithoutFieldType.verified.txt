@@ -1,0 +1,25 @@
+﻿{
+  Diagnostics: [
+    {
+      Location: /*
+{
+    [Bits(8)]
+    ^^^^^^^^^
+    CustomType _field;
+^^^^^^^^^^^^^^^^^^^^^^
+}
+*/
+ : (5,4)-(6,22),
+      Message: Custom and nested type fields must have a [Bits] attribute with defined bits and field type, otherwise we can't determine the size or type of the field.,
+      Severity: Error,
+      Descriptor: {
+        Id: BITFS003,
+        Title: Custom and nested type fields must have a [Bits] attribute with defined bits and field type,
+        MessageFormat: Custom and nested type fields must have a [Bits] attribute with defined bits and field type, otherwise we can't determine the size or type of the field.,
+        Category: Bitfields.CSharp.Generator,
+        DefaultSeverity: Error,
+        IsEnabledByDefault: true
+      }
+    }
+  ]
+}
