@@ -70,7 +70,7 @@ You can define the register as follows:
 
 ```csharp
 using System.Diagnostics;
-using Bitfields;
+using Bitfields.CSharp;
 
 namespace Main;
 
@@ -169,7 +169,7 @@ Bitfields offers a wide range of features to help you define and work with bitfi
 
 ```csharp
 using System.Diagnostics;
-using Bitfields;
+using Bitfields.CSharp;
 
 namespace Main;
 
@@ -303,7 +303,7 @@ A bitfield can represent unsigned types (`Byte`, `UShort`, `Char`, `UInt`, `ULon
 of a bitfield  must add up to the number of bits of the bitfield type.
 
 ```csharp
-using Bitfields;
+using Bitfields.CSharp;
 
 [Bitfield(BitfieldType.Byte)]
 public partial class BitfieldByte
@@ -336,7 +336,7 @@ would be `-16` to `15`. The more bits you include, the larger the value range.
 
 ```csharp
 using System.Diagnostics;
-using Bitfields;
+using Bitfields.CSharp;
 
 namespace Main;
 
@@ -401,7 +401,7 @@ A bitfield can also be constructed using a fluent builder pattern using the `new
 
 ```csharp
 using System.Diagnostics;
-using Bitfields;
+using Bitfields.CSharp;
 
 namespace Main;
 
@@ -452,7 +452,7 @@ class Program
 A constructed bitfield can be converted back to a builder using the `ToBuilder()` method.
 
 ```csharp
-using Bitfields;
+using Bitfields.CSharp;
 
 namespace Main;
 
@@ -489,7 +489,7 @@ bitfield can also be converted to bits using the `ToBits()` function..
 
 ```csharp
 using System.Diagnostics;
-using Bitfields;
+using Bitfields.CSharp;
 
 namespace Main;
 
@@ -552,7 +552,7 @@ There are two field orderings, `BitOrder.Lsb` and `BitOrder.Msb`.
 
 ```csharp
 using System.Diagnostics;
-using Bitfields;
+using Bitfields.CSharp;
 
 namespace Main;
 
@@ -597,7 +597,7 @@ Fields suffixed with an underscore `_` are padding fields, which are inaccessibl
 
 ```csharp
 using System.Diagnostics;
-using Bitfields;
+using Bitfields.CSharp;
 
 namespace Main;
 
@@ -629,7 +629,7 @@ Fields have constants generated for their number of bits and offset in the bitfi
 
 ```csharp
 using System.Diagnostics;
-using Bitfields;
+using Bitfields.CSharp;
 
 namespace Main;
 
