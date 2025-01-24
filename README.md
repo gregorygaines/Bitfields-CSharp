@@ -1,11 +1,17 @@
 # 🌻 Bitfields
 
-<p>
-  <a href="https://github.com/gregorygaines/Bitfields-CSharp"><img src="https://img.shields.io/badge/github-gregorygaines/Bitfields--CSharp-8da0cb?labelColor=555555&logo=github" alt="GitHub repo" /></a>
-  <a href="#%EF%B8%8F-license"><img src="https://img.shields.io/github/license/Naereen/StrapDown.js.svg" alt="License"></a>
-  <a href="https://github.com/gregorygaines/Bitfields-CSharp"><img src="https://img.shields.io/github/stars/gregorygaines/Bitfields-CSharp?style=flat" alt="Stars"/></a>
-  <a href="https://ko-fi.com/T6T07SXPV"><img src="https://img.shields.io/badge/Ko--fi-FF5E5B?logo=kofi&logoColor=fff&style=flat" alt="Kofi"></a>
-</p>
+[![GitHub][github-badge]][github-url]
+[![License][license-badge]][license-url]
+[![Stars][stars-badge]][github-url]
+[![Ko-fi][kofi-badge]][kofi-url]
+
+[github-badge]: https://img.shields.io/badge/github-gregorygaines/Bitfields--CSharp-8da0cb?labelColor=555555&logo=github
+[github-url]: https://github.com/gregorygaines/Bitfields-CSharp
+[license-badge]: https://img.shields.io/github/license/Naereen/StrapDown.js.svg
+[license-url]: #%EF%B8%8F-license
+[stars-badge]: https://img.shields.io/github/stars/gregorygaines/Bitfields-CSharp?style=flat
+[kofi-badge]: https://img.shields.io/badge/Ko--fi-FF5E5B?logo=kofi&logoColor=fff&style=flat
+[kofi-url]: https://ko-fi.com/T6T07SXPV
 
 A C# create that provides a source generator for generating bitfields from classes, structs, or
 custom types, which is useful for defining schemas when working with low-level environments
@@ -47,22 +53,26 @@ Control Register (DISPCNT) which is an 8-bit register:
 In table form, the bits are as follows:
 
 <table>
-  <tr>
-    <td>7</td>
-    <td>6</td>
-    <td>5</td>
-    <td>4</td>
-    <td>3</td>
-    <td>2</td>
-    <td>1</td>
-    <td>0</td>
-  </tr>
-  <tr>
-    <td colspan="3">Always 0x3</td>
-    <td>OBJ</td>
-    <td colspan="2">Display BG</td>
-    <td colspan="2">BG Mode</td>
-  </tr>
+  <thead>
+    <tr>
+      <td>7</td>
+      <td>6</td>
+      <td>5</td>
+      <td>4</td>
+      <td>3</td>
+      <td>2</td>
+      <td>1</td>
+      <td>0</td>
+    </tr>
+  </thead>
+  <thead>
+    <tr>
+      <td colspan="3">Always 0x3</td>
+      <td>OBJ</td>
+      <td colspan="2">Display BG</td>
+      <td colspan="2">BG Mode</td>
+    </tr>
+  </thead>
 </table>
 
 
