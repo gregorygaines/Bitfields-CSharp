@@ -66,4 +66,12 @@ public class BitfieldSnapshotTests
 
         await SnapshotVerifier.Verify(source);
     }
+    
+    [Test]
+    public async Task BitfieldWithIgnoredMethods()
+    {
+        var source = await CaseLoader.LoadCase("BitfieldWithIgnoredMethods");
+
+        await SnapshotVerifier.Verify(source);
+    }
 }

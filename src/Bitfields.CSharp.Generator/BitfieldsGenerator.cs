@@ -42,7 +42,7 @@ public class BitfieldsGenerator : IIncrementalGenerator
         var visibility = classNode.Modifiers.FirstOrDefault(m => m.IsKind(SyntaxKind.PublicKeyword) || m.IsKind(SyntaxKind.InternalKeyword) || m.IsKind(SyntaxKind.PrivateKeyword) || m.IsKind(SyntaxKind.ProtectedKeyword));
         var bitfieldAttributeData = GetBitfieldsAttribute(source);
         var bitfield = BitfieldParser.ParseBitfield(bitfieldAttributeData, classSymbol.Name, visibility.ToString());
-        var membersList = classNode.Members.ToList();
+        var membersList = classNode.Members.Where(m => m.IsKind(SyntaxKind.FieldDeclaration)).ToList();
         membersList.Reverse();
         var fieldsParseResults = BitfieldFieldsParser.ParseBitfieldFields(bitfield, membersList);
         if (fieldsParseResults.Error != null)
