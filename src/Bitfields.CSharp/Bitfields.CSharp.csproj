@@ -18,6 +18,7 @@
         <PackageReadmeFile>README.md</PackageReadmeFile>
         <PackageLicenseFile>LICENSE</PackageLicenseFile>
         <PackageProjectUrl>https://github.com/gregorygaines/Bitfields-CSharp</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/gregorygaines/Bitfields-CSharp</RepositoryUrl>
         <PackageReleaseNotes>
             - Bitfields ignore non-field members in classes and structs
             - Improve error messages for field bits less than bitfield size
