@@ -52,29 +52,9 @@ Control Register (DISPCNT) which is an 8-bit register:
 
 In table form, the bits are as follows:
 
-<table>
-  <thead>
-    <tr>
-      <td>7</td>
-      <td>6</td>
-      <td>5</td>
-      <td>4</td>
-      <td>3</td>
-      <td>2</td>
-      <td>1</td>
-      <td>0</td>
-    </tr>
-  </thead>
-  <thead>
-    <tr>
-      <td colspan="3">Always 0x3</td>
-      <td>OBJ</td>
-      <td colspan="2">Display BG</td>
-      <td colspan="2">BG Mode</td>
-    </tr>
-  </thead>
-</table>
-
+| 7 - 5      | 4   | 3 -2       | 1 - 0   |
+|------------|-----|------------|---------|
+| Always 0x3 | OBJ | Display BG | BG Mode |
 
 You can define the register as follows:
 
