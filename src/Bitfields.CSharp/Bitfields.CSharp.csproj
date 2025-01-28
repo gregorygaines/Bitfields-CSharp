@@ -10,7 +10,7 @@
 
     <PropertyGroup>
         <PackageId>Bitfields.CSharp</PackageId>
-        <Version>0.1.2</Version>
+        <Version>0.2.0</Version>
         <Authors>Gregory Gaines</Authors>
         <Description>Source generator for generating flexible bitfields for classes or structs, useful for low-level code (embedded or emulators).</Description>
         <PackageTags>Bitfield, Bitfields, C#, Bit, Emulator, Embedded, class, struct</PackageTags>
@@ -18,6 +18,10 @@
         <PackageReadmeFile>README.md</PackageReadmeFile>
         <PackageLicenseFile>LICENSE</PackageLicenseFile>
         <PackageProjectUrl>https://github.com/gregorygaines/Bitfields-CSharp</PackageProjectUrl>
+        <PackageReleaseNotes>
+            - Bitfields ignore non-field members in classes and structs
+            - Improve error messages for field bits less than bitfield size
+        </PackageReleaseNotes>
     </PropertyGroup>
 
     <ItemGroup>
