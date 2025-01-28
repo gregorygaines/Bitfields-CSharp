@@ -59,7 +59,7 @@ public class BitfieldsGenerator : IIncrementalGenerator
             context.ReportDiagnostic(Diagnostic.Create(DiagnosticDescriptors.Create(
                     "BITFS006",
                     "Field bits are less than the bitfield bits",
-                    $"The total number of bits of the fields ({fieldBitsSum} bits) is less than the bits of the bitfield type '{bitfield.Type.ToTypeString()}' ({bitfieldBits} bits), you can add a padding field (suffixed with '_') to fill the remaining bits."),
+                    $"The total number of bits of the fields ({fieldBitsSum} bits) is less than the bits of the bitfield type '{bitfield.Type.ToTypeString()}' ({bitfieldBits} bits), you can add a padding field (suffixed with '_') to fill the remaining '{bitfieldBits - fieldBitsSum}' bits."),
                 classNode.Identifier.GetLocation(), classSymbol.Name));
             return;
         }
