@@ -3,5 +3,8 @@
 namespace Bitfields.CSharp;
 
 [AttributeUsage(AttributeTargets.Field)]
-public class BitsAttribute(byte bits = 0, CustomFieldType customFieldType = CustomFieldType.Unknown)
+public class BitsAttribute(
+    byte bits = 0,
+    CustomFieldType customFieldType = CustomFieldType.Unknown,
+    CustomFieldBase customFieldBase = CustomFieldBase.ClassOrStruct)
     : Attribute;
