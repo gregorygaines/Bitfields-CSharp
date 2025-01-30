@@ -14,8 +14,10 @@ public static class FieldConstGetterSetter
         foreach (var field in fields.Where(field =>
                      FieldUtil.DoesFieldHaveGetter(field) || FieldUtil.DoesFieldHaveSetter(field)))
         {
-            source.AppendLine($"{bitfield.Visibility} const int {field.Name.ToSnakeCase().ToUpper()}_BITS = {field.Bits};");
-            source.AppendLine($"{bitfield.Visibility} const int {field.Name.ToSnakeCase().ToUpper()}_OFFSET = {field.Offset};");
+            source.AppendLine(
+                $"{bitfield.Visibility} const int {field.Name.ToSnakeCase().ToUpper()}_BITS = {field.Bits};");
+            source.AppendLine(
+                $"{bitfield.Visibility} const int {field.Name.ToSnakeCase().ToUpper()}_OFFSET = {field.Offset};");
         }
 
         return string.Join("\n", source);
@@ -34,10 +36,20 @@ public static class FieldConstGetterSetter
 
             if (field.CustomType)
             {
-                source.AppendLine($"""
-                                   {bitfield.Visibility} {field.Type} {getterName}() => 
-                                      {field.Type.UpperFirstChar()}.FromBits(({field.CustomTypeFieldType})({field.Name}.ToBits() & ({field.CustomTypeFieldType})({bitfield.Type.ToTypeString()}.MaxValue >> ({InternalTypeUtil.GetBitsFromInternalType(bitfield.Type)} - {field.Bits}))));
-                                   """);
+                if (field.IsEnum)
+                {
+                    source.AppendLine($"""
+                                       {bitfield.Visibility} {field.Type} {getterName}() => 
+                                          {field.Name}.FromBits(({field.CustomTypeFieldType})({field.Name}.ToBits() & ({field.CustomTypeFieldType})({bitfield.Type.ToTypeString()}.MaxValue >> ({InternalTypeUtil.GetBitsFromInternalType(bitfield.Type)} - {field.Bits}))));
+                                       """);
+                }
+                else
+                {
+                    source.AppendLine($"""
+                                       {bitfield.Visibility} {field.Type} {getterName}() => 
+                                          {field.Type.UpperFirstChar()}.FromBits(({field.CustomTypeFieldType})({field.Name}.ToBits() & ({field.CustomTypeFieldType})({bitfield.Type.ToTypeString()}.MaxValue >> ({InternalTypeUtil.GetBitsFromInternalType(bitfield.Type)} - {field.Bits}))));
+                                       """);
+                }
             }
             else if (InternalTypeUtil.GetInternalType(field.Type) == InternalTypeUtil.InternalType.Bool)
             {

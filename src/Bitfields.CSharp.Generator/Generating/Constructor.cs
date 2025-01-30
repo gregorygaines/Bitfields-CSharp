@@ -32,9 +32,20 @@ public static class Constructor
             if (field.CustomType)
             {
                 if (field.Default != null)
+                {
                     source.AppendLine($"this.{field.Name} = {field.Default};");
+                }
                 else
-                    source.AppendLine($"this.{field.Name} = {field.Type}.FromBits(0);");
+                {
+                    if (field.IsEnum)
+                    {
+                        source.AppendLine($"this.{field.Name} = {field.Name}.FromBits(0);");
+                    }
+                    else
+                    {
+                        source.AppendLine($"this.{field.Name} = {field.Type}.FromBits(0);");
+                    }
+                }
             }
             else if (InternalTypeUtil.GetInternalType(field.Type) == InternalTypeUtil.InternalType.Bool)
             {
@@ -59,11 +70,24 @@ public static class Constructor
         var source = new StringBuilder();
         foreach (var field in fields.Where(FieldUtil.DoesFieldHaveGetter))
             if (field.CustomType)
-                source.AppendLine($"this.{field.Name} = {field.Type}.FromBits(0);");
+            {
+                if (field.IsEnum)
+                {
+                    source.AppendLine($"this.{field.Name} = {field.Name}.FromBits(0);");
+                }
+                else
+                {
+                    source.AppendLine($"this.{field.Name} = {field.Type}.FromBits(0);");
+                }
+            }
             else if (InternalTypeUtil.GetInternalType(field.Type) == InternalTypeUtil.InternalType.Bool)
+            {
                 source.AppendLine($"this.{field.Name} = false;");
+            }
             else
+            {
                 source.AppendLine($"this.{field.Name} = ({field.Type})0;");
+            }
 
         return string.Join("\n", source);
     }

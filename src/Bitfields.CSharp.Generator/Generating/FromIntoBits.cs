@@ -22,7 +22,7 @@ public static class FromIntoBits
                             """);
         return string.Join("\n", source);
     }
-    
+
     public static string FromBitsWithDefaultsSource(ParsedBitfield bitfield, List<ParsedBitfieldField> fields)
     {
         var source = new StringBuilder();
@@ -37,7 +37,7 @@ public static class FromIntoBits
                             """);
         return string.Join("\n", source);
     }
-    
+
     private static string GenerateFieldDefaultsImplSource(List<ParsedBitfieldField> fields)
     {
         var source = new StringBuilder();
@@ -71,14 +71,28 @@ public static class FromIntoBits
             var setterName = $"Set{field.Name.ToPascalCase()}";
 
             if (field.CustomType)
-                source.AppendLine(
-                    $"bitfield.{setterName}({field.Type}.FromBits(({field.CustomTypeFieldType})(bits >> {fieldOffsetConst} & ({field.CustomTypeFieldType})({bitfield.Type.ToTypeString()}.MaxValue >> ({InternalTypeUtil.GetBitsFromInternalType(bitfield.Type)} - {field.Bits})))));");
+            {
+                if (field.IsEnum)
+                {
+                    source.AppendLine(
+                        $"bitfield.{setterName}({field.Name}.FromBits(({field.CustomTypeFieldType})(bits >> {fieldOffsetConst} & ({field.CustomTypeFieldType})({bitfield.Type.ToTypeString()}.MaxValue >> ({InternalTypeUtil.GetBitsFromInternalType(bitfield.Type)} - {field.Bits})))));");
+                }
+                else
+                {
+                    source.AppendLine(
+                        $"bitfield.{setterName}({field.Type}.FromBits(({field.CustomTypeFieldType})(bits >> {fieldOffsetConst} & ({field.CustomTypeFieldType})({bitfield.Type.ToTypeString()}.MaxValue >> ({InternalTypeUtil.GetBitsFromInternalType(bitfield.Type)} - {field.Bits})))));");
+                }
+            }
             else if (InternalTypeUtil.GetInternalType(field.Type) == InternalTypeUtil.InternalType.Bool)
+            {
                 source.AppendLine(
                     $"bitfield.{setterName}((((bits >> {fieldOffsetConst} & ({bitfield.Type.ToTypeString()}.MaxValue >> ({InternalTypeUtil.GetBitsFromInternalType(bitfield.Type)} - {field.Bits}))) != 0)));");
+            }
             else
+            {
                 source.AppendLine(
                     $"bitfield.{setterName}(({field.Type})(bits >> {fieldOffsetConst} & ({bitfield.Type.ToTypeString()}.MaxValue >> ({InternalTypeUtil.GetBitsFromInternalType(bitfield.Type)} - {field.Bits}))));");
+            }
         }
 
         return string.Join("\n", source);
@@ -101,16 +115,20 @@ public static class FromIntoBits
                 var getterName = $"Get{field.Name.ToPascalCase()}";
 
                 if (field.CustomType)
-                    source.AppendLine($"bits |= ({bitfieldType})(({bitfieldType}){getterName}().ToBits() << {fieldOffsetConst});");
+                    source.AppendLine(
+                        $"bits |= ({bitfieldType})(({bitfieldType}){getterName}().ToBits() << {fieldOffsetConst});");
                 else if (InternalTypeUtil.GetInternalType(field.Type) == InternalTypeUtil.InternalType.Bool)
-                    source.AppendLine($"bits |= ({bitfieldType})(({bitfieldType})({getterName}() ? 1 : 0) << {fieldOffsetConst});");
+                    source.AppendLine(
+                        $"bits |= ({bitfieldType})(({bitfieldType})({getterName}() ? 1 : 0) << {fieldOffsetConst});");
                 else if (field.Unsigned)
                 {
-                    source.AppendLine($"bits |= ({bitfieldType})(({bitfieldType}){getterName}() << {fieldOffsetConst});");
+                    source.AppendLine(
+                        $"bits |= ({bitfieldType})(({bitfieldType}){getterName}() << {fieldOffsetConst});");
                 }
                 else
                 {
-                    source.AppendLine($"bits |= ({bitfieldType})((({bitfieldType}){getterName}() & ({bitfield.Type.ToTypeString()}.MaxValue >> ({InternalTypeUtil.GetBitsFromInternalType(bitfield.Type)} - {field.Bits}))) << {fieldOffsetConst});");
+                    source.AppendLine(
+                        $"bits |= ({bitfieldType})((({bitfieldType}){getterName}() & ({bitfield.Type.ToTypeString()}.MaxValue >> ({InternalTypeUtil.GetBitsFromInternalType(bitfield.Type)} - {field.Bits}))) << {fieldOffsetConst});");
                 }
             }
             else
@@ -119,7 +137,8 @@ public static class FromIntoBits
                     source.AppendLine(
                         $"bits |= ({bitfieldType})((({bitfieldType}){field.Name}.ToBits() & ({bitfield.Type.ToTypeString()}.MaxValue >> ({InternalTypeUtil.GetBitsFromInternalType(bitfield.Type)} - {field.Bits}))) << {field.Offset});");
                 else if (InternalTypeUtil.GetInternalType(field.Type) == InternalTypeUtil.InternalType.Bool)
-                    source.AppendLine($"bits |= ({bitfieldType})((({bitfieldType}){field.Name} ? 1 : 0) << {field.Offset});");
+                    source.AppendLine(
+                        $"bits |= ({bitfieldType})((({bitfieldType}){field.Name} ? 1 : 0) << {field.Offset});");
                 else
                     source.AppendLine(
                         $"bits |= ({bitfieldType})((({bitfieldType}){field.Name} & ({bitfield.Type.ToTypeString()}.MaxValue >> ({InternalTypeUtil.GetBitsFromInternalType(bitfield.Type)} - {field.Bits}))) << {field.Offset});");
