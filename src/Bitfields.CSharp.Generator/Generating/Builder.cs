@@ -49,7 +49,7 @@ public static class Builder
 
         return string.Join("\n", source);
     }
-    
+
     public static string ToBuilderSource(ParsedBitfield bitfield)
     {
         var source = new StringBuilder();
@@ -60,7 +60,7 @@ public static class Builder
                                return new {{builderName}}(this.ToBits());
                            }
                            """);
-        
+
         return string.Join("\n", source);
     }
 }

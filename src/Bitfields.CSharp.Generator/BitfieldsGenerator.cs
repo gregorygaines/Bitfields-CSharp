@@ -106,7 +106,9 @@ public class BitfieldsGenerator : IIncrementalGenerator
             context.AddSource($"{classSymbol.Name}.g.cs", SourceText.From($$"""
                                                                             {{classImpl}}
                                                                             """, Encoding.UTF8));
-        } else {
+        }
+        else
+        {
             context.AddSource($"{classSymbol.Name}.g.cs", SourceText.From($$"""
                                                                             namespace {{nameSpace}}
                                                                             {

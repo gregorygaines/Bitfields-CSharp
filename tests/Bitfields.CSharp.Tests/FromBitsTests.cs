@@ -16,7 +16,7 @@ public class FromBitsTests
     public void FromBits()
     {
         var bitfield = FromBitsBitfield.FromBits(0x78563412);
-        
+
         Assert.That(bitfield.ToBits(), Is.EqualTo(0x78563412));
         Assert.That(bitfield.GetA(), Is.EqualTo(0x12));
         Assert.That(bitfield.GetB(), Is.EqualTo(0x34));
@@ -28,7 +28,7 @@ public class FromBitsTests
     public void FromBitsWithDefaults()
     {
         var bitfield = FromBitsBitfield.FromBitsWithDefaults(0xFFFFFFFF);
-        
+
         Assert.That(bitfield.ToBits(), Is.EqualTo(0xFF56FF12));
         Assert.That(bitfield.GetA(), Is.EqualTo(0x12));
         Assert.That(bitfield.GetB(), Is.EqualTo(0xFF));

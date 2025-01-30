@@ -66,7 +66,7 @@ public class BitfieldSnapshotTests
 
         await SnapshotVerifier.Verify(source);
     }
-    
+
     [Test]
     public async Task BitfieldWithIgnoredMethods()
     {

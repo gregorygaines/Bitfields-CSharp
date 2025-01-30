@@ -6,7 +6,7 @@ namespace Bitfields.CSharp.Generator.Generating;
 public static class Common
 {
     public const string CustomFieldEnumBaseEnumName = "BfBase";
-    
+
     private const string SetFieldDefaultsMethodName = "SetFieldDefaults";
 
     public static string GenerateSettingDefaultsSource(List<ParsedBitfieldField> parsedFields)

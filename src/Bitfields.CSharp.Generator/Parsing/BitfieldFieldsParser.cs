@@ -344,7 +344,7 @@ public static class BitfieldFieldsParser
         public DiagnosticDescriptor Descriptor { get; set; }
         public Location Location { get; set; }
     }
-    
+
     private class InternalBitsAttribute
     {
         public int? Bits { get; set; }

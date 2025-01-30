@@ -2,7 +2,7 @@ namespace Bitfields.CSharp.Tests;
 
 public enum CustomEnumType
 {
-    BfBase = int.MaxValue, 
+    BfBase = int.MaxValue,
     A = 0,
     B = 1,
     C = 2,
@@ -28,7 +28,7 @@ public static class CustomEnumTypeExtensions
         return (byte)val;
     }
 }
-    
+
 [Bitfield(BitfieldType.UInt)]
 public partial class BitfieldWithEnumField
 {
@@ -49,7 +49,7 @@ public class EnumCustomTypeTests
 
         Assert.Pass();
     }
-    
+
     [Test]
     public void EnumFieldFromBits()
     {
@@ -66,9 +66,9 @@ public class EnumCustomTypeTests
     public void EnumFieldSetField()
     {
         var bitfield = new BitfieldWithEnumField();
-        
+
         bitfield.SetD(CustomEnumType.C);
-        
+
         Assert.That(bitfield.GetD(), Is.EqualTo(CustomEnumType.C));
     }
 }
