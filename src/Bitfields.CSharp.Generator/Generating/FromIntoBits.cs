@@ -75,7 +75,7 @@ public static class FromIntoBits
                 if (field.IsEnum)
                 {
                     source.AppendLine(
-                        $"bitfield.{setterName}({field.Name}.FromBits(({field.CustomTypeFieldType})(bits >> {fieldOffsetConst} & ({field.CustomTypeFieldType})({bitfield.Type.ToTypeString()}.MaxValue >> ({InternalTypeUtil.GetBitsFromInternalType(bitfield.Type)} - {field.Bits})))));");
+                        $"bitfield.{setterName}({field.Type}.{Common.CustomFieldEnumBaseEnumName}.FromBits(({field.CustomTypeFieldType})(bits >> {fieldOffsetConst} & ({field.CustomTypeFieldType})({bitfield.Type.ToTypeString()}.MaxValue >> ({InternalTypeUtil.GetBitsFromInternalType(bitfield.Type)} - {field.Bits})))));");
                 }
                 else
                 {

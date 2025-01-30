@@ -40,7 +40,7 @@ public static class FieldConstGetterSetter
                 {
                     source.AppendLine($"""
                                        {bitfield.Visibility} {field.Type} {getterName}() => 
-                                          {field.Name}.FromBits(({field.CustomTypeFieldType})({field.Name}.ToBits() & ({field.CustomTypeFieldType})({bitfield.Type.ToTypeString()}.MaxValue >> ({InternalTypeUtil.GetBitsFromInternalType(bitfield.Type)} - {field.Bits}))));
+                                          {field.Type}.{Common.CustomFieldEnumBaseEnumName}.FromBits(({field.CustomTypeFieldType})({field.Name}.ToBits() & ({field.CustomTypeFieldType})({bitfield.Type.ToTypeString()}.MaxValue >> ({InternalTypeUtil.GetBitsFromInternalType(bitfield.Type)} - {field.Bits}))));
                                        """);
                 }
                 else

@@ -39,7 +39,7 @@ public static class Constructor
                 {
                     if (field.IsEnum)
                     {
-                        source.AppendLine($"this.{field.Name} = {field.Name}.FromBits(0);");
+                        source.AppendLine($"this.{field.Name} = {field.Type}.{Common.CustomFieldEnumBaseEnumName}.FromBits(0);");
                     }
                     else
                     {
@@ -73,7 +73,7 @@ public static class Constructor
             {
                 if (field.IsEnum)
                 {
-                    source.AppendLine($"this.{field.Name} = {field.Name}.FromBits(0);");
+                    source.AppendLine($"this.{field.Name} = {field.Type}.{Common.CustomFieldEnumBaseEnumName}.FromBits(0);");
                 }
                 else
                 {
