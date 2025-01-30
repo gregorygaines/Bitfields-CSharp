@@ -473,9 +473,9 @@ class Program
 
 ### Bitfield Conversions
 
-A bitfield can be converted from bits using the `FromBits()` or `FromBitsWithoutDefaults()` methos. The former
+A bitfield can be converted from bits using the `FromBits()` or `FromBitsWithoutDefaults()` methods. The former
 ignores default values, while the latter respects them. Padding fields are always 0 or their default value. The
-bitfield can also be converted to bits using the `ToBits()` function..
+bitfield can also be converted to bits using the `ToBits()` function.
 
 ```csharp
 using System.Diagnostics;
