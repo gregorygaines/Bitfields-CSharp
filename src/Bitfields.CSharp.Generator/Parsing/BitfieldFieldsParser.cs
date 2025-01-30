@@ -57,6 +57,7 @@ public static class BitfieldFieldsParser
         var bitsAttribute = ParseBitsAttribute(fieldDeclaration);
         var name = GetMemberName(fieldDeclaration);
         var defaultVal = GetDefaultValue(fieldDeclaration);
+        var isEnum = false;
 
         int? bits;
         string customTypeFieldType = null;
@@ -77,6 +78,7 @@ public static class BitfieldFieldsParser
 
             bits = bitsAttribute.Bits;
             customTypeFieldType = bitsAttribute.CustomFieldNamespaceType;
+            isEnum = bitsAttribute.IsEnum;
         }
         else
         {
@@ -84,6 +86,7 @@ public static class BitfieldFieldsParser
             bits = bitsAttribute != null && bitsAttribute.Bits != null
                 ? bitsAttribute.Bits
                 : InternalTypeUtil.GetBitsFromInternalType((InternalTypeUtil.InternalType)internalType!);
+            isEnum = bitsAttribute != null && bitsAttribute.IsEnum;
 
             var internalTypeBits =
                 InternalTypeUtil.GetBitsFromInternalType((InternalTypeUtil.InternalType)internalType!);
@@ -131,7 +134,8 @@ public static class BitfieldFieldsParser
             Offset = offset,
             Default = defaultVal,
             Unsigned = unsigned,
-            Padding = padding
+            Padding = padding,
+            IsEnum = isEnum
         };
 
         return new InternalParseResult
@@ -234,7 +238,7 @@ public static class BitfieldFieldsParser
                         }
                         break;
                     case CustomFieldBaseAttributeName:
-                        internalBitsAttribute.IsEnum = value == "Enum";
+                        internalBitsAttribute.IsEnum = value == "CustomFieldBase.Enum";
                         break;
                     default:
                         throw new Exception($"Invalid attribute argument: {name}");
@@ -243,13 +247,14 @@ public static class BitfieldFieldsParser
             else
             {
                 var value = argument.Expression.GetFirstToken().Value;
+                var fullEnum = "";
                 switch (arg)
                 {
                     case BitsArgumentIndex:
                         internalBitsAttribute.Bits = (int)value!;
                         break;
                     case CustomFieldTypeArgumentIndex:
-                        var fullEnum = argument.Expression.ToFullString();
+                        fullEnum = argument.Expression.ToFullString();
                         switch (fullEnum)
                         {
                             case "CustomFieldType.Byte":
@@ -281,7 +286,8 @@ public static class BitfieldFieldsParser
                         }
                         break;
                     case CustomFieldBaseArgumentIndex:
-                        if (value != null) internalBitsAttribute.IsEnum = value.ToString() == "Enum";
+                        fullEnum = argument.Expression.ToFullString();
+                        if (value != null) internalBitsAttribute.IsEnum = fullEnum == "CustomFieldBase.Enum";
                         break;
                     default:
                         throw new Exception($"Invalid attribute argument index: {arg}");
