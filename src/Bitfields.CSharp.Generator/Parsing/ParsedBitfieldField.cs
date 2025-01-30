@@ -11,5 +11,6 @@ public class ParsedBitfieldField
     public bool Padding { get; set; }
     public bool CustomType { get; set; }
     public string CustomTypeFieldType { get; set; }
+    public bool IsEnum { get; set; }
     public string? Default { get; set; }
 }
