@@ -211,8 +211,16 @@ public partial class Bitfield
   [Bits(3, CustomFieldType.Byte)] 
   private CustomType customType;
 
+  /// Custom enum types are supported. All custom types are assumed ot be a class
+  /// of struct, but enums must be specified using the `CustomFieldBase.Enum` param.
+  /// The enum must have an enum named `BfBase` and a extension class that implements
+  /// both the static `static [CustomEnumType] FromBits(this [CustomEnumType] _, byte val)`
+  /// and `static [type] ToBits(this [CustomEnumType] val)` methods.
+  [Bits(3, CustomFieldType.Byte, CustomFieldBase.Enum)]
+  private CustomEnumType customEnumType;
+  
   /// Fields suffixed with "_" are padding fields, which are inaccessible.
-  [Bits(21)] 
+  [Bits(18)] 
   private int padding_ = 0x3;
 }
 
@@ -224,13 +232,13 @@ public partial struct NestedBitfield
 
 /// Custom types must have 2 methods, `static [CustomType] FromBits([type] bits)`
 /// and `[type] ToBits()` methods.
-public partial struct CustomType
+public struct CustomType
 {
-  private byte a;
+  private byte health;
 
-  public CustomType(byte a)
+  public CustomType(byte health)
   {
-    this.a = a;
+    this.health = health;
   }
 
   public static CustomType FromBits(byte bits)
@@ -240,8 +248,36 @@ public partial struct CustomType
 
   public byte ToBits()
   {
-    return a;
+    return health;
   }
+}
+
+/// Custom enum types must have an enum named `BfBase`, its value doesn't matter.
+public enum CustomEnumType {
+    BfBase = int.MaxValue,
+    A = 1,
+    B = 2,
+    C = 3,
+}
+
+/// Custom enum types must have a extension class that implements the `FromBits` and `ToBits`.
+public static class CustomEnumTypeExtension
+{
+    public static CustomEnumType FromBits(this CustomEnumType _, byte val)
+    {
+        return val switch
+        {
+            1 => CustomEnumType.A,
+            2 => CustomEnumType.B,
+            3 => CustomEnumType.C,
+            _ => CustomEnumType.A
+        };
+    }
+
+    public static byte ToBits(this CustomEnumType val)
+    {
+        return (byte)val;
+    }
 }
 
 class Program
@@ -255,6 +291,7 @@ class Program
       .WithByteField(5)
       .WithSmallByte(0xF)
       .WithCustomType(CustomType.FromBits(0x3))
+      .WithCustomEnumType(CustomEnumType.A)
       .WithSignedByte(-5)
       .WithSmallSignedByte(0xF)
       .Build();
@@ -272,6 +309,8 @@ class Program
     Debug.Assert(byteField == 5);
     var smallSignedByte = bitfield.GetSmallSignedByte(); // Signed-types are sign-extended by the MSB.
     Debug.Assert(smallSignedByte == -1);
+    var enumType = bitfield.GetCustomEnumType();
+    Debug.Assert(enumType == CustomEnumType.A);
 
     // Converting into bits:
     var bits = bitfield.ToBits();
@@ -290,7 +329,7 @@ class Program
 ### Bitfield Types
 
 A bitfield can represent unsigned types (`Byte`, `UShort`, `Char`, `UInt`, `ULong`). The field bits
-of a bitfield  must add up to the number of bits of the bitfield type.
+of a bitfield must add up to the number of bits of the bitfield type.
 
 ```csharp
 using Bitfields.CSharp;
@@ -324,6 +363,8 @@ Signed types are treated as 2's complement data types, meaning the most signific
 represents the sign bit. For example, if you had a field with 5 bits, the value range
 would be `-16` to `15`. The more bits you include, the larger the value range.
 
+A field can have a default value which must fit in the field type and the specified bits.
+
 ```csharp
 using System.Diagnostics;
 using Bitfields.CSharp;
@@ -341,7 +382,9 @@ public partial class Bitfield
   private sbyte cSignExtended = 9;
   [Bits(8, CustomFieldType.Byte)]
   private CustomType customType = CustomType.FromBits(0x11);
-  [Bits(4)]
+  [Bits(2, CustomFieldType.Byte, CustomFieldBase.Enum)]
+  private CustomEnumType customEnumType = CustomEnumType.A;
+  [Bits(2)]
   private byte padding_ = 0;
 }
 
@@ -365,6 +408,34 @@ public class CustomType
   }
 }
 
+/// Custom enum types must have an enum named `BfBase`, its value doesn't matter.
+public enum CustomEnumType {
+    BfBase = int.MaxValue,
+    A = 1,
+    B = 2,
+    C = 3,
+}
+
+/// Custom enum types must have a extension class that implements the `FromBits` and `ToBits`.
+public static class CustomEnumTypeExtension
+{
+    public static CustomEnumType FromBits(this CustomEnumType _, byte val)
+    {
+        return val switch
+        {
+            1 => CustomEnumType.A,
+            2 => CustomEnumType.B,
+            3 => CustomEnumType.C,
+            _ => CustomEnumType.A
+        };
+    }
+
+    public static byte ToBits(this CustomEnumType val)
+    {
+        return (byte)val;
+    }
+}
+
 class Program
 {
   static void Main(string[] args)
@@ -375,6 +446,7 @@ class Program
     Debug.Assert(bitfield.GetB() == -127);
     Debug.Assert(bitfield.GetCSignExtended() == -7);
     Debug.Assert(bitfield.GetCustomType().ToBits() == CustomType.FromBits(0x11).ToBits());
+    Debug.Assert(bitfield.GetCustomEnumType() == CustomEnumType.A);
   }
 }
 ```
