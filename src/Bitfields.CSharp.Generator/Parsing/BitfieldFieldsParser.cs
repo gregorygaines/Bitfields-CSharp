@@ -9,9 +9,11 @@ public static class BitfieldFieldsParser
 
     private const string BitsAttributeName = "bits";
     private const string CustomFieldTypeAttributeName = "customFieldType";
+    private const string CustomFieldBaseAttributeName = "customFieldBase";
 
     private const int BitsArgumentIndex = 0;
     private const int CustomFieldTypeArgumentIndex = 1;
+    private const int CustomFieldBaseArgumentIndex = 2;
 
     public static ParseResults ParseBitfieldFields(ParsedBitfield bitfield,
         List<MemberDeclarationSyntax> fieldDeclaration)
@@ -230,7 +232,9 @@ public static class BitfieldFieldsParser
                                 internalBitsAttribute.CustomFieldNamespaceType = "long";
                                 break;
                         }
-
+                        break;
+                    case CustomFieldBaseAttributeName:
+                        internalBitsAttribute.IsEnum = value == "Enum";
                         break;
                     default:
                         throw new Exception($"Invalid attribute argument: {name}");
@@ -275,7 +279,9 @@ public static class BitfieldFieldsParser
                             default:
                                 throw new Exception($"Invalid custom field type: {fullEnum}");
                         }
-
+                        break;
+                    case CustomFieldBaseArgumentIndex:
+                        if (value != null) internalBitsAttribute.IsEnum = value.ToString() == "Enum";
                         break;
                     default:
                         throw new Exception($"Invalid attribute argument index: {arg}");
@@ -291,22 +297,6 @@ public static class BitfieldFieldsParser
         if (fieldDeclaration.AttributeLists.Count == 0) return null;
         return fieldDeclaration.AttributeLists.SelectMany(list => list.Attributes)
             .First(attribute => attribute.Name.GetText().ToString() == "Bits");
-    }
-
-    private static string GetNameFieldTypeFromCustomFieldTypeId(int customFieldTypeId)
-    {
-        return customFieldTypeId switch
-        {
-            1 => "byte",
-            2 => "sbyte",
-            3 => "ushort",
-            4 => "short",
-            5 => "uint",
-            6 => "int",
-            7 => "ulong",
-            8 => "long",
-            _ => throw new Exception($"Invalid custom field type id: {customFieldTypeId}")
-        };
     }
 
     /// <summary>
@@ -348,11 +338,11 @@ public static class BitfieldFieldsParser
         public DiagnosticDescriptor Descriptor { get; set; }
         public Location Location { get; set; }
     }
-
-
+    
     private class InternalBitsAttribute
     {
         public int? Bits { get; set; }
         public string? CustomFieldNamespaceType { get; set; }
+        public bool IsEnum { get; set; }
     }
 }
