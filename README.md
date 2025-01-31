@@ -188,38 +188,38 @@ public partial class Bitfield
   [Bits(4)] 
   private sbyte smallSignedByte;
 
-  /// A field can be a bool type.
+  // A field can be a bool type.
   private bool boolField;
 
   // A field can have a default value, which must fit in the field type.
   private byte fieldWithDefault = 0x1F;
 
-  /// A field can have a default value and specified bits. The default value
-  /// must fit in the specified bits or a compile error will occur.
+  // A field can have a default value and specified bits. The default value
+  // must fit in the specified bits or a compile error will occur.
   [Bits(4)]
   private byte fieldWithBitsDefault = 0xF;
 
-  /// Nested bitfields are supported, but must have their bits and
-  /// its type specified and implement the `static [CustomType] FromBits([type] bits)`
-  /// and `[type] ToBits()` methods.
+  // Nested bitfields are supported, but must have their bits and
+  // its type specified and implement the `static [CustomType] FromBits([type] bits)`
+  // and `[type] ToBits()` methods.
   [Bits(3, CustomFieldType.Byte)] 
   private NestedBitfield nestedField;
 
-  /// Custom types are supported, but must have their bits and
-  /// type specified and implement the `static [CustomType] FromBits([type] bits)`
-  /// and `[type] ToBits()` methods.
+  // Custom types are supported, but must have their bits and
+  // type specified and implement the `static [CustomType] FromBits([type] bits)`
+  // and `[type] ToBits()` methods.
   [Bits(3, CustomFieldType.Byte)] 
   private CustomType customType;
 
-  /// Custom enum types are supported. All custom types are assumed ot be a class
-  /// of struct, but enums must be specified using the `CustomFieldBase.Enum` param.
-  /// The enum must have an enum named `BfBase` and a extension class that implements
-  /// both the static `static [CustomEnumType] FromBits(this [CustomEnumType] _, byte val)`
-  /// and `static [type] ToBits(this [CustomEnumType] val)` methods.
+  // Custom enum types are supported. All custom types are assumed ot be a class
+  // of struct, but enums must be specified using the `CustomFieldBase.Enum` param.
+  // The enum must have an enum named `BfBase` and a extension class that implements
+  // both the static `static [CustomEnumType] FromBits(this [CustomEnumType] _, byte val)`
+  // and `static [type] ToBits(this [CustomEnumType] val)` methods.
   [Bits(3, CustomFieldType.Byte, CustomFieldBase.Enum)]
   private CustomEnumType customEnumType;
   
-  /// Fields suffixed with "_" are padding fields, which are inaccessible.
+  // Fields suffixed with "_" are padding fields, which are inaccessible.
   [Bits(18)] 
   private int padding_ = 0x3;
 }
@@ -230,8 +230,8 @@ public partial struct NestedBitfield
   private byte field;
 }
 
-/// Custom types must have 2 methods, `static [CustomType] FromBits([type] bits)`
-/// and `[type] ToBits()` methods.
+// Custom types must have 2 methods, `static [CustomType] FromBits([type] bits)`
+// and `[type] ToBits()` methods.
 public struct CustomType
 {
   private byte health;
@@ -252,7 +252,7 @@ public struct CustomType
   }
 }
 
-/// Custom enum types must have an enum named `BfBase`, its value doesn't matter.
+// Custom enum types must have an enum named `BfBase`, its value doesn't matter.
 public enum CustomEnumType {
     BfBase = int.MaxValue,
     A = 1,
@@ -260,7 +260,7 @@ public enum CustomEnumType {
     C = 3,
 }
 
-/// Custom enum types must have a extension class that implements the `FromBits` and `ToBits`.
+// Custom enum types must have a extension class that implements the `FromBits` and `ToBits`.
 public static class CustomEnumTypeExtension
 {
     public static CustomEnumType FromBits(this CustomEnumType _, byte val)
@@ -408,7 +408,7 @@ public class CustomType
   }
 }
 
-/// Custom enum types must have an enum named `BfBase`, its value doesn't matter.
+// Custom enum types must have an enum named `BfBase`, its value doesn't matter.
 public enum CustomEnumType {
     BfBase = int.MaxValue,
     A = 1,
@@ -416,7 +416,7 @@ public enum CustomEnumType {
     C = 3,
 }
 
-/// Custom enum types must have a extension class that implements the `FromBits` and `ToBits`.
+// Custom enum types must have a extension class that implements the `FromBits` and `ToBits`.
 public static class CustomEnumTypeExtension
 {
     public static CustomEnumType FromBits(this CustomEnumType _, byte val)
