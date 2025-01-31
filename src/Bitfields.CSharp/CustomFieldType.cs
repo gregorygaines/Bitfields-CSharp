@@ -1,5 +1,8 @@
 namespace Bitfields.CSharp;
 
+/// <summary>
+/// The type of the custom field.
+/// </summary>
 public enum CustomFieldType
 {
     Unknown,

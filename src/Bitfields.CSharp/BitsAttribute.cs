@@ -2,6 +2,9 @@
 
 namespace Bitfields.CSharp;
 
+/// <summary>
+/// Attribute to specify properties of a bitfield field.
+/// </summary>
 [AttributeUsage(AttributeTargets.Field)]
 public class BitsAttribute(
     byte bits = 0,
