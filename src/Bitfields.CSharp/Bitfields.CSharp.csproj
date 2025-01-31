@@ -10,7 +10,7 @@
 
     <PropertyGroup>
         <PackageId>Bitfields.CSharp</PackageId>
-        <Version>0.3.0</Version>
+        <Version>0.3.1</Version>
         <Authors>Gregory Gaines</Authors>
         <Description>Source generator for generating flexible bitfields for classes or structs, useful for low-level code (embedded or emulators).</Description>
         <PackageTags>Bitfield, Bitfields, C#, Bit, Emulator, Embedded, class, struct</PackageTags>
@@ -20,7 +20,7 @@
         <PackageProjectUrl>https://github.com/gregorygaines/Bitfields-CSharp</PackageProjectUrl>
         <RepositoryUrl>https://github.com/gregorygaines/Bitfields-CSharp</RepositoryUrl>
         <PackageReleaseNotes>
-            - Added support for enum field types
+            - Updated dependencies and documentation
         </PackageReleaseNotes>
     </PropertyGroup>
 
