@@ -1,8 +1,11 @@
 # 🌻 Bitfields-CSharp
 
+[![Build](https://github.com/gregorygaines/Bitfields-CSharp/actions/workflows/ci.yml/badge.svg)](https://github.com/gregorygaines/Bitfields-CSharp/actions/workflows/ci.yml)
+![NuGet Version](https://img.shields.io/nuget/v/Bitfields.CSharp)
 [![GitHub][github-badge]][github-url]
 [![License][license-badge]][license-url]
 [![Stars][stars-badge]][github-url]
+![NuGet Downloads](https://img.shields.io/nuget/dt/Bitfields.CSharp)
 [![Ko-fi][kofi-badge]][kofi-url]
 
 [github-badge]: https://img.shields.io/badge/github-gregorygaines/Bitfields--CSharp-8da0cb?labelColor=555555&logo=github
