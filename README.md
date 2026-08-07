@@ -356,6 +356,102 @@ public partial class BitfieldULong
 }
 ```
 
+### Bitflags
+
+Sometimes a bitfield value is best represented by an enum. Instead of writing the conversion
+methods yourself, annotate the enum with `[Bitflag]`. The source generator creates a companion
+extension class with `FromBits` and `ToBits` methods.
+
+Bitflags support the unsigned `BitfieldType` values (`Byte`, `Char`, `UShort`, `UInt`, `ULong`,
+and `UInt128`). Exactly one enum member should be annotated with `[Base]`. `FromBits` returns that
+member when the input does not match a defined enum value.
+
+```csharp
+using System.Diagnostics;
+using Bitfields.CSharp;
+using Bitfields.CSharp.Bitflag;
+
+namespace Main;
+
+// Generates RenderModeExtensions.FromBits(byte) and RenderMode.ToBits().
+[Bitflag(BitfieldType.Byte)]
+public enum RenderMode
+{
+  [Base] Normal = 0,
+  Mirror = 1,
+  Flip = 2,
+  Hidden = 3
+}
+
+[Bitflag(BitfieldType.Byte)]
+public enum AudioMode
+{
+  [Base] Stereo = 0,
+  Mono = 1,
+  Mute = 2,
+  Surround = 3
+}
+
+[Bitfield(BitfieldType.Byte)]
+public partial class DisplayControl
+{
+  // Enum fields need [Bits] so the generator knows how much space they occupy.
+  [Bits(4)]
+  private RenderMode renderMode = RenderMode.Normal;
+
+  [Bits(4)]
+  private AudioMode audioMode = AudioMode.Stereo;
+}
+
+class Program
+{
+  static void Main()
+  {
+    var display = new DisplayControl.DisplayControlBuilder()
+      .WithRenderMode(RenderMode.Mirror)
+      .WithAudioMode(AudioMode.Mute)
+      .Build();
+
+    Debug.Assert(display.GetRenderMode() == RenderMode.Mirror);
+    Debug.Assert(display.GetAudioMode() == AudioMode.Mute);
+    Debug.Assert(display.ToBits() == 0x21);
+
+    Debug.Assert(RenderModeExtensions.FromBits(2) == RenderMode.Flip);
+    Debug.Assert(RenderMode.Mirror.ToBits() == 1);
+    Debug.Assert(RenderModeExtensions.FromBits(15) == RenderMode.Normal);
+  }
+}
+```
+
+The generated `RenderModeExtensions` class is equivalent to:
+
+```csharp
+public static class RenderModeExtensions
+{
+  public static RenderMode FromBits(byte bits) => bits switch
+  {
+    0 => RenderMode.Normal,
+    1 => RenderMode.Mirror,
+    2 => RenderMode.Flip,
+    3 => RenderMode.Hidden,
+    _ => RenderMode.Normal
+  };
+
+  public static RenderMode FromBits(this RenderMode _, byte bits) => FromBits(bits);
+
+  public static byte ToBits(this RenderMode value) => (byte)value;
+}
+```
+
+#### Bitflag Configuration
+
+The first argument to `[Bitflag(...)]` selects the unsigned type used by the generated conversion
+methods.
+
+| Argument     | Values                                                                                                                             | Default  | Description                                                                                             |
+|--------------|------------------------------------------------------------------------------------------------------------------------------------|----------|---------------------------------------------------------------------------------------------------------|
+| Backing type | `BitfieldType.Byte`, `BitfieldType.Char`, `BitfieldType.UShort`, `BitfieldType.UInt`, `BitfieldType.ULong`, `BitfieldType.UInt128` | Required | The input and output type used by `FromBits` and `ToBits`. Backing types support values up to 128 bits. |
+
 ### Bitfield Field Types
 
 A bitfield field can be any unsigned (`byte`, `short`, `char`, `uint`, `ulong`), signed
