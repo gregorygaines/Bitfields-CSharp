@@ -12,5 +12,6 @@ public class ParsedBitfieldField
     public bool CustomType { get; set; }
     public string CustomTypeFieldType { get; set; }
     public bool IsEnum { get; set; }
+    public bool IsBitflag { get; set; }
     public string? Default { get; set; }
 }

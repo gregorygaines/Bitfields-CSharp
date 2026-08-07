@@ -16,12 +16,12 @@ public static class BitfieldFieldsParser
     private const int CustomFieldBaseArgumentIndex = 2;
 
     public static ParseResults ParseBitfieldFields(ParsedBitfield bitfield,
-        List<MemberDeclarationSyntax> fieldDeclaration)
+        List<MemberDeclarationSyntax> fieldDeclaration, SemanticModel? semanticModel = null)
     {
         List<ParsedBitfieldField> fields = [];
         foreach (var field in fieldDeclaration)
         {
-            var result = ParseBitfieldField(bitfield, field, fields);
+            var result = ParseBitfieldField(bitfield, field, fields, semanticModel);
             if (result.Error != null)
                 return new ParseResults
                 {
@@ -37,7 +37,7 @@ public static class BitfieldFieldsParser
     }
 
     private static InternalParseResult ParseBitfieldField(ParsedBitfield bitfield,
-        MemberDeclarationSyntax fieldDeclaration, List<ParsedBitfieldField> prevFields)
+        MemberDeclarationSyntax fieldDeclaration, List<ParsedBitfieldField> prevFields, SemanticModel? semanticModel)
     {
         var typeStr = GetMemberType(fieldDeclaration);
         if (InternalTypeUtil.IsUnsupportedFieldType(typeStr))
@@ -58,12 +58,15 @@ public static class BitfieldFieldsParser
         var name = GetMemberName(fieldDeclaration);
         var defaultVal = GetDefaultValue(fieldDeclaration);
         var isEnum = false;
+        var bitflagFieldType = GetBitflagFieldType(fieldDeclaration, semanticModel);
+        var isBitflag = bitflagFieldType != null;
 
         int? bits;
         string customTypeFieldType = null;
         if (isCustomType)
         {
-            if (bitsAttribute == null || bitsAttribute.Bits == null || bitsAttribute.CustomFieldNamespaceType == null)
+            if (bitsAttribute == null || bitsAttribute.Bits == null ||
+                (!isBitflag && bitsAttribute.CustomFieldNamespaceType == null))
                 return new InternalParseResult
                 {
                     Error = new ParseError
@@ -77,7 +80,7 @@ public static class BitfieldFieldsParser
                 };
 
             bits = bitsAttribute.Bits;
-            customTypeFieldType = bitsAttribute.CustomFieldNamespaceType;
+            customTypeFieldType = bitflagFieldType ?? bitsAttribute.CustomFieldNamespaceType;
             isEnum = bitsAttribute.IsEnum;
         }
         else
@@ -135,7 +138,8 @@ public static class BitfieldFieldsParser
             Default = defaultVal,
             Unsigned = unsigned,
             Padding = padding,
-            IsEnum = isEnum
+            IsEnum = isEnum,
+            IsBitflag = isBitflag
         };
 
         return new InternalParseResult
@@ -153,6 +157,28 @@ public static class BitfieldFieldsParser
             MethodDeclarationSyntax method => method.ReturnType.ToString(),
             EventDeclarationSyntax @event => @event.Type.ToString(),
             _ => "Unknown"
+        };
+    }
+
+    private static string? GetBitflagFieldType(MemberDeclarationSyntax fieldDeclaration, SemanticModel? semanticModel)
+    {
+        if (semanticModel == null) return null;
+        if (semanticModel.GetTypeInfo(((FieldDeclarationSyntax)fieldDeclaration).Declaration.Type).Type is not INamedTypeSymbol enumSymbol ||
+            enumSymbol.TypeKind != TypeKind.Enum) return null;
+
+        var attribute = enumSymbol.GetAttributes().FirstOrDefault(a =>
+            a.AttributeClass?.ToDisplayString() == "Bitfields.CSharp.Bitflag.BitflagAttribute");
+        if (attribute == null) return null;
+
+        return (int)attribute.ConstructorArguments[0].Value! switch
+        {
+            0 => "byte",
+            1 => "char",
+            2 => "ushort",
+            3 => "uint",
+            4 => "ulong",
+            5 => "System.UInt128",
+            _ => null
         };
     }
 

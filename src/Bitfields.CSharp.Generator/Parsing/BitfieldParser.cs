@@ -12,6 +12,7 @@ public static class BitfieldParser
     private const int UshortTypeId = 2;
     private const int UintTypeId = 3;
     private const int UlongTypeId = 4;
+    private const int UInt128TypeId = 5;
 
     private const int MsbBitOrderId = 0;
     private const int LsbBitOrderId = 1;
@@ -40,6 +41,7 @@ public static class BitfieldParser
             UshortTypeId => InternalTypeUtil.InternalType.UShort,
             UintTypeId => InternalTypeUtil.InternalType.UInt,
             UlongTypeId => InternalTypeUtil.InternalType.ULong,
+            UInt128TypeId => InternalTypeUtil.InternalType.UInt128,
             _ => throw new Exception($"Invalid bitfield type id: {bitfieldTypeId}")
         };
     }

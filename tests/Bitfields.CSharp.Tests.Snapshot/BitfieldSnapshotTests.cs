@@ -74,4 +74,12 @@ public class BitfieldSnapshotTests
 
         await SnapshotVerifier.Verify(source);
     }
+
+    [Test]
+    public async Task BitflagWithBitfield()
+    {
+        var source = await CaseLoader.LoadCase("BitflagWithBitfield");
+
+        await SnapshotVerifier.Verify(source);
+    }
 }

@@ -13,6 +13,7 @@ public static class InternalTypeUtil
         UInt,
         Int,
         ULong,
+        UInt128,
         Long
     }
 
@@ -29,6 +30,7 @@ public static class InternalTypeUtil
             InternalType.UInt => "uint",
             InternalType.Int => "int",
             InternalType.ULong => "ulong",
+            InternalType.UInt128 => "System.UInt128",
             InternalType.Long => "long",
             _ => throw new ArgumentOutOfRangeException(nameof(internalType), internalType, null)
         };
@@ -47,6 +49,7 @@ public static class InternalTypeUtil
             InternalType.UInt => "UInt32",
             InternalType.Int => "Int32",
             InternalType.ULong => "UInt64",
+            InternalType.UInt128 => "UInt128",
             InternalType.Long => "Int64",
             _ => throw new ArgumentOutOfRangeException(nameof(internalType), internalType, null)
         };
@@ -113,6 +116,7 @@ public static class InternalTypeUtil
             InternalType.UInt => 32,
             InternalType.Int => 32,
             InternalType.ULong => 64,
+            InternalType.UInt128 => 128,
             InternalType.Long => 64,
             _ => throw new ArgumentOutOfRangeException(nameof(internalType), internalType, null)
         };
@@ -121,6 +125,6 @@ public static class InternalTypeUtil
     public static bool IsInternalTypeUnsigned(InternalType internalType)
     {
         return internalType is InternalType.Bool or InternalType.Byte or InternalType.Char or InternalType.UShort
-            or InternalType.UInt or InternalType.ULong;
+            or InternalType.UInt or InternalType.ULong or InternalType.UInt128;
     }
 }

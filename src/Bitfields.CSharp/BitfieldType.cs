@@ -9,5 +9,6 @@ public enum BitfieldType
     Char,
     UShort,
     UInt,
-    ULong
+    ULong,
+    UInt128
 }

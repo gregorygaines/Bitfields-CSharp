@@ -1,6 +1,7 @@
 using System.Text;
 using Bitfields.CSharp.Generator.Generating;
 using Bitfields.CSharp.Generator.Parsing;
+using Bitfields.CSharp.Generator.Parsing.Bitflag;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -12,6 +13,7 @@ namespace Bitfields.CSharp.Generator;
 public class BitfieldsGenerator : IIncrementalGenerator
 {
     private const string BitfieldAttributeMarker = "Bitfields.CSharp.BitfieldAttribute";
+    private const string BitflagAttributeMarker = "Bitfields.CSharp.Bitflag.BitflagAttribute";
 
     public void Initialize(IncrementalGeneratorInitializationContext initContext)
     {
@@ -22,6 +24,33 @@ public class BitfieldsGenerator : IIncrementalGenerator
         );
 
         initContext.RegisterSourceOutput(bitfieldAttributesSources, Emit);
+
+        var bitflagSources = initContext.SyntaxProvider.ForAttributeWithMetadataName(
+            BitflagAttributeMarker,
+            static (_, _) => true,
+            static (context, _) => context);
+        initContext.RegisterSourceOutput(bitflagSources, EmitBitflag);
+    }
+
+    private static void EmitBitflag(SourceProductionContext context, GeneratorAttributeSyntaxContext source)
+    {
+        var symbol = (INamedTypeSymbol)source.TargetSymbol;
+        var attribute = source.Attributes.First(BitflagParser.IsBitflagAttribute);
+        try
+        {
+            var bitflag = BitflagParser.Parse(symbol, attribute);
+            var body = Bitflag.Generate(bitflag);
+            var text = string.IsNullOrEmpty(bitflag.Namespace)
+                ? body
+                : $"namespace {bitflag.Namespace} {{\n{body}\n}}";
+            context.AddSource($"{symbol.Name}.Bitflag.g.cs", SourceText.From(text, Encoding.UTF8));
+        }
+        catch (Exception exception)
+        {
+            context.ReportDiagnostic(Diagnostic.Create(
+                DiagnosticDescriptors.Create("BITFS008", "Invalid bitflag", exception.Message),
+                source.TargetNode.GetLocation()));
+        }
     }
 
     private static void Emit(SourceProductionContext context, GeneratorAttributeSyntaxContext source)
@@ -44,7 +73,7 @@ public class BitfieldsGenerator : IIncrementalGenerator
         var bitfield = BitfieldParser.ParseBitfield(bitfieldAttributeData, classSymbol.Name, visibility.ToString());
         var membersList = classNode.Members.Where(m => m.IsKind(SyntaxKind.FieldDeclaration)).ToList();
         membersList.Reverse();
-        var fieldsParseResults = BitfieldFieldsParser.ParseBitfieldFields(bitfield, membersList);
+        var fieldsParseResults = BitfieldFieldsParser.ParseBitfieldFields(bitfield, membersList, source.SemanticModel);
         if (fieldsParseResults.Error != null)
         {
             context.ReportDiagnostic(Diagnostic.Create(fieldsParseResults.Error.Descriptor,

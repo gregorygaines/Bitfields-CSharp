@@ -36,7 +36,11 @@ public static class FieldConstGetterSetter
 
             if (field.CustomType)
             {
-                if (field.IsEnum)
+                if (field.IsBitflag)
+                {
+                    source.AppendLine($"{bitfield.Visibility} {field.Type} {getterName}() => {field.Type}Extensions.FromBits(({field.CustomTypeFieldType})({field.Name}.ToBits() & ({field.CustomTypeFieldType})({bitfield.Type.ToTypeString()}.MaxValue >> ({InternalTypeUtil.GetBitsFromInternalType(bitfield.Type)} - {field.Bits}))));");
+                }
+                else if (field.IsEnum)
                 {
                     source.AppendLine($"""
                                        {bitfield.Visibility} {field.Type} {getterName}() => 

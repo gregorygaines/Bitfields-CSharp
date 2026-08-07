@@ -37,7 +37,9 @@ public static class Constructor
                 }
                 else
                 {
-                    if (field.IsEnum)
+                    if (field.IsBitflag)
+                        source.AppendLine($"this.{field.Name} = {field.Type}Extensions.FromBits(0);");
+                    else if (field.IsEnum)
                     {
                         source.AppendLine($"this.{field.Name} = {field.Type}.{Common.CustomFieldEnumBaseEnumName}.FromBits(0);");
                     }
@@ -71,7 +73,9 @@ public static class Constructor
         foreach (var field in fields.Where(FieldUtil.DoesFieldHaveGetter))
             if (field.CustomType)
             {
-                if (field.IsEnum)
+                if (field.IsBitflag)
+                    source.AppendLine($"this.{field.Name} = {field.Type}Extensions.FromBits(0);");
+                else if (field.IsEnum)
                 {
                     source.AppendLine($"this.{field.Name} = {field.Type}.{Common.CustomFieldEnumBaseEnumName}.FromBits(0);");
                 }

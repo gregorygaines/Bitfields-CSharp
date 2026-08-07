@@ -72,7 +72,11 @@ public static class FromIntoBits
 
             if (field.CustomType)
             {
-                if (field.IsEnum)
+                if (field.IsBitflag)
+                {
+                    source.AppendLine($"bitfield.{setterName}({field.Type}Extensions.FromBits(({field.CustomTypeFieldType})(bits >> {fieldOffsetConst} & ({field.CustomTypeFieldType})({bitfield.Type.ToTypeString()}.MaxValue >> ({InternalTypeUtil.GetBitsFromInternalType(bitfield.Type)} - {field.Bits})))));");
+                }
+                else if (field.IsEnum)
                 {
                     source.AppendLine(
                         $"bitfield.{setterName}({field.Type}.{Common.CustomFieldEnumBaseEnumName}.FromBits(({field.CustomTypeFieldType})(bits >> {fieldOffsetConst} & ({field.CustomTypeFieldType})({bitfield.Type.ToTypeString()}.MaxValue >> ({InternalTypeUtil.GetBitsFromInternalType(bitfield.Type)} - {field.Bits})))));");
